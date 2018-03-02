@@ -2,13 +2,16 @@
 name = "can-utils"
 description = "Handy modules and utilities for manipulating CAN data and interfaces."
 documentation = "https://docs.rs/can-utils"
-version = "0.1.0"
+version = "0.1.1"
 authors = [ "M@ Dunlap <mattdunlap@gmail.com>" ]
-categories = [ "can", "embedded", "hardware-support", "no-std" ]
+categories = [ "embedded", "hardware-support", "network-programming", "no-std" ]
 keywords = ["can", "canbus", "can-fd"]
 license = "MIT"
 repository = "https://github.com/dunmatt/can-utils"
 
 [dependencies]
+[dependencies.byteorder]
+default-features = false
+version = "*"
 
 [features]

@@ -4,7 +4,9 @@
 //! data representations that don't impose usage patterns on the user (since hardware needs vary).
 //! But at the same time, one of Rusts great strengths is its type system and most Rustaceans
 //! prefer more type level sanity checks.  This module contains frame representations that cater
-//! to both use cases, as well as easy / cheap layers to convert between them.
+//! to both use cases, as well as easy (and cheap) layers to convert between them.
+
+pub use ::byte_orders::*;
 
 /// A standard representation of the frames that might be sent and received on a CAN bus.
 ///
@@ -30,4 +32,3 @@ pub struct CanFrame {
   pub reserved1: bool,
 }
 
-// TODO: write some data access methods for CanFrame

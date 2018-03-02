@@ -7,7 +7,18 @@
 #![deny(missing_docs)]
 #![deny(warnings)]
 #![no_std]
+// #![cfg_attr(not(feature = "std"), no_std)]
 
 mod frames;
 
 pub use frames::*;
+
+/// A collection of [`byteorder`] types to facilitate unpacking values from frames.
+pub mod byte_orders {
+  extern crate byteorder;
+  /// Defines the byte order for CANOpen frames, for later use decoding values.
+  pub type CanOpenByteOrder = byteorder::LittleEndian;
+
+  /// Defines the byte order for J1939 frames, for later use decoding values.
+  pub type J1939ByteOrder = byteorder::LittleEndian;
+}
