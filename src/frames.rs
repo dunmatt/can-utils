@@ -6,9 +6,7 @@
 //! prefer more type level sanity checks.  This module contains frame representations that cater
 //! to both use cases, as well as easy (and cheap) layers to convert between them.
 
-pub use ::byte_orders::*;
-
-/// A standard representation of the frames that might be sent and received on a CAN bus.
+/// A low level representation of the frames that might be sent and received on a CAN bus.
 ///
 /// This struct can represent any CAN frame, as described in the CAN specification
 /// version 2.0, published September 1991 by Bosch GmbH.  They can be used for either
@@ -32,7 +30,7 @@ pub struct CanFrame {
   pub reserved1: bool,
 }
 
-/// A standard representation of the frames that might be sent and received on a CAN FD bus.
+/// A low level representation of the frames that might be sent and received on a CAN FD bus.
 ///
 /// This struct can represent any CAN FD frame, as described in the CAN FD specification
 /// version 1.0, published April 2012 by Bosch GmbH.  They can be used for either

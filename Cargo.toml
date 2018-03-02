@@ -2,12 +2,15 @@
 name = "can-utils"
 description = "Handy modules and utilities for manipulating CAN data and interfaces."
 documentation = "https://docs.rs/can-utils"
-version = "0.1.1"
+version = "0.1.2"
 authors = [ "M@ Dunlap <mattdunlap@gmail.com>" ]
 categories = [ "embedded", "hardware-support", "network-programming", "no-std" ]
 keywords = ["can", "canbus", "can-fd"]
 license = "MIT"
 repository = "https://github.com/dunmatt/can-utils"
+
+[badges]
+travis-ci = { repository = "dunmatt/can-utils" }
 
 [dependencies]
 [dependencies.byteorder]
