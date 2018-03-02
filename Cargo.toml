@@ -12,6 +12,6 @@ repository = "https://github.com/dunmatt/can-utils"
 [dependencies]
 [dependencies.byteorder]
 default-features = false
-version = "*"
+version = "^1"
 
 [features]
