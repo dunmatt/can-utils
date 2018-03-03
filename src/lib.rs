@@ -10,11 +10,12 @@
 // #![cfg_attr(not(feature = "std"), no_std)]
 
 mod frames;
+pub mod interface;
 pub mod timing_calculator;
 
 pub use frames::*;
 
-/// A collection of [`byteorder`] types to facilitate unpacking values from frames.
+/// A collection of `byteorder` types to facilitate unpacking values from frames.
 pub mod byte_orders {
   extern crate byteorder;
   /// Defines the byte order for CANOpen frames, for later use decoding values.
@@ -22,4 +23,6 @@ pub mod byte_orders {
 
   /// Defines the byte order for J1939 frames, for later use decoding values.
   pub type J1939ByteOrder = byteorder::LittleEndian;
+
+  // TODO: add more byte orders here
 }

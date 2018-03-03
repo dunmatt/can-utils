@@ -63,3 +63,39 @@ pub struct CanFdFrame {
   /// value and subsequent protocols may end up using it.
   pub reserved1: bool,
 }
+
+/// Converts a CAN-FD DLC into a byte count.
+///
+/// NOTE: According to the CAN 2.0 spec a data length of 8 can be encoded as any DLC >= 8.
+/// This function has no way of knowing the frame type, so be sure to only call it after
+/// you've verified that it's a CAN-FD frame you're dealing with.
+pub fn can_fd_dlc_to_byte_count(dlc: u8) -> u8 {
+  match dlc & 0xF {
+    0...8 => dlc,
+    9...12 => 8 + 4 * (dlc & 0b111),
+    13 => 32,
+    14 => 48,
+    15 => 64,
+    _ => unreachable!(),
+  }
+}
+
+/// Converts a byte count into a CAN-FD DLC.
+///
+/// NOTE: Not all byte counts can be represented as DLCs, which by implication means that not all
+/// byte counts are valid CAN-FD frame sizes.  This function accounts for the truncation and
+/// padding that may be incurred as a result of that.
+///
+/// If n != byte_count_to_can_fd_dlc(can_fd_dlc_to_byte_count(n)) truncation or padding will occur.
+pub fn byte_count_to_can_fd_dlc(byte_count: u8) -> u8 {
+  match byte_count {
+    0...8 => byte_count,
+    9...12 => 0b1001,
+    13...16 => 0b1010,
+    17...20 => 0b1011,
+    21...24 => 0b1100,
+    25...32 => 0b1101,
+    32...48 => 0b1110,
+    _ => 0b1111,
+  }
+}

@@ -1,5 +1,7 @@
 //! The `timing_calculator` module computes CAN interface timing parameters.
 
+use core::cmp;
+
 type BaudRatePrescalaInnerType = u32;
 
 type BitSamplePointInnerType = u16;
@@ -80,12 +82,17 @@ impl<'a> Iterator for CanBitTimingParameterIter<'a> {
       if self.bit_width % self.last_attempted_prescaler != 0 {
         continue;
       }
-      // TODO: sorry for all the casting here, clean it up once uom builds with no_std
       let tq = self.bit_width / self.last_attempted_prescaler;
-      let seg1 = (tq * 1000 / (self.target_sample_point as u32) - 1) as SegmentLengthInnerType;
-      let seg2 = (tq - seg1 as u32 - 1) as SegmentLengthInnerType;
-      if tq as SegmentLengthInnerType > self.interface_limits.max_jump_width.0 ||
-          seg1 > self.interface_limits.max_segment_1_length.0 ||
+      if tq < 8 {  // not sure why this is 8, but that's what the can docs and calculators say
+        continue;
+      }
+      // TODO: sorry for all the casting here, clean it up once uom builds with no_std
+      let sample = tq * 1000 / (self.target_sample_point as u32);
+      let seg2 = cmp::max(1, tq - sample) as SegmentLengthInnerType;  // seg2 must be >= 1 quantum
+      let seg1 = tq as SegmentLengthInnerType - seg2 - 1;  // magic 1 here is the Sych segment.
+
+      // we dont' need to verify that seg1 >= seg2 because target_sample_point >= 50%
+      if seg1 > self.interface_limits.max_segment_1_length.0 ||
           seg2 > self.interface_limits.max_segment_2_length.0 {
         continue;
       }
@@ -107,12 +114,9 @@ pub fn compute_timing_parameters<'a>(clock_speed: MegaHertz,
                                      target_sample_point: BitSamplePoint,
                                      jump_width: SegmentLength,
                                      limits: &'a CanTimingLimits) -> CanBitTimingParameterIter {
-  let MegaHertz(mhz) = clock_speed;
-  let BitsPerSecond(bps) = nominal_bitrate;
-  let SegmentLength(jw) = jump_width;
   CanBitTimingParameterIter {
-    bit_width: 1_000_000 * mhz / bps,
-    jump_width: jw,
+    bit_width: 1_000_000 * clock_speed.0 / nominal_bitrate.0,
+    jump_width: jump_width.0,
     target_sample_point: target_sample_point.tenths_of_a_percent,
     last_attempted_prescaler: 1,
     interface_limits: limits,

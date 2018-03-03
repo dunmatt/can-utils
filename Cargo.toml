@@ -2,7 +2,7 @@
 name = "can-utils"
 description = "Handy modules and utilities for manipulating CAN data and interfaces."
 documentation = "https://docs.rs/can-utils"
-version = "0.1.3"
+version = "0.1.4"
 authors = [ "M@ Dunlap <mattdunlap@gmail.com>" ]
 categories = [ "embedded", "hardware-support", "network-programming", "no-std" ]
 keywords = ["can", "canbus", "can-fd"]
