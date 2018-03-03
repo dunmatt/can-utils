@@ -1,4 +1,4 @@
-//! The [`frames`] module houses various CAN frame representations.
+//! The `frames` module houses various CAN frame representations.
 //!
 //! Regular CAN is a very low level technology (OSI layers 1 and 2), and as such there's a need for
 //! data representations that don't impose usage patterns on the user (since hardware needs vary).

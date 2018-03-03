@@ -10,6 +10,7 @@
 // #![cfg_attr(not(feature = "std"), no_std)]
 
 mod frames;
+pub mod timing_calculator;
 
 pub use frames::*;
 
